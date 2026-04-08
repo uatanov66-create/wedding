@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ульяна и Юрий — 17.06.2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Tenor+Sans&family=Raleway:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:#fff;color:#1a1a1a;font-family:'Tenor Sans',Georgia,serif;overflow-x:hidden}
+#music-btn{position:fixed;top:16px;right:16px;z-index:1000;width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,0.9);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 12px rgba(0,0,0,0.15)}
+#music-btn svg{width:22px;height:22px;fill:#555}
+.note-on{display:none}.playing .note-on{display:block}.playing .note-off{display:none}
+#sticky-bar{position:fixed;bottom:0;left:0;right:0;z-index:999;background:rgba(255,255,255,0.93);backdrop-filter:blur(8px);border-top:1px solid #e8e8e8;padding:12px 20px;text-align:center}
+#sticky-bar a{font-family:'Raleway',sans-serif;font-weight:300;font-size:0.78rem;letter-spacing:0.2em;color:#444;text-decoration:none}
+#hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden}
+#hero-img{position:absolute;inset:0;background-image:url('photo_2026-04-08_18-15-59.jpg');background-size:cover;background-position:center 30%;filter:grayscale(100%) brightness(0.5)}
+.hero-content{position:relative;text-align:center;padding:2rem;color:#fff}
+.hero-names{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:clamp(3.5rem,14vw,7.5rem);line-height:1;letter-spacing:0.01em}
+.hero-and{display:block;font-size:clamp(1.8rem,7vw,4rem);margin:0.15em 0}
+.hero-line{width:160px;height:1px;background:rgba(255,255,255,0.7);margin:1.5rem auto}
+.hero-date-txt{font-family:'Raleway',sans-serif;font-weight:200;font-size:clamp(1rem,4vw,1.5rem);letter-spacing:0.25em}
+section{padding:4.5rem 1.5rem}
+.s-white{background:#fff}
+.s-gray{background:#f5f5f3}
+.s-dark{background:#2a2a2a;color:#fff}
+.inner{max-width:580px;margin:0 auto;text-align:center}
+.cal-title{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:clamp(2rem,8vw,3.2rem);line-height:1.1;color:#1a1a1a}
+.cal-title-w{color:#fff}
+.cal-wrap{display:flex;align-items:center;gap:1rem;justify-content:center;margin-bottom:2rem}
+.cal-line{flex:1;height:1px;background:#ccc;max-width:55px}
+.cal-line-w{background:rgba(255,255,255,0.35)}
+.body-txt{font-family:'Raleway',sans-serif;font-weight:300;font-size:0.92rem;line-height:1.9;color:#666}
+.body-txt-w{color:rgba(255,255,255,0.72)}
+.photo-full{width:100%;display:block}
+.photo-full img{width:100%;height:60vw;max-height:500px;object-fit:cover;filter:grayscale(100%);display:block}
+.photo-arch{width:68%;max-width:320px;margin:0 auto;border-radius:999px 999px 0 0;overflow:hidden}
+.photo-arch img{width:100%;height:400px;object-fit:cover;object-position:center top;filter:grayscale(100%);display:block}
+.photo-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin:3px 0}
+.photo-grid img{width:100%;height:48vw;max-height:290px;object-fit:cover;filter:grayscale(100%);display:block}
+.photo-3col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px}
+.photo-3col img{width:100%;height:33vw;max-height:200px;object-fit:cover;filter:grayscale(100%);display:block}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-top:1.5rem;font-family:'Raleway',sans-serif;font-size:0.78rem}
+.cal-head{font-weight:400;color:#aaa;padding:6px 0;text-align:center}
+.cal-head.we{color:#e05a5a}
+.cal-day{padding:8px 4px;text-align:center;color:#333}
+.cal-day.we{color:#e05a5a}
+.cal-day.empty{color:transparent}
+.cal-day.hl{background:#1a1a1a;color:#fff;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;margin:0 auto}
+.cal-month{font-family:'Raleway',sans-serif;font-weight:200;font-size:0.7rem;letter-spacing:0.35em;text-transform:uppercase;color:#888;margin-bottom:0.5rem}
+.timeline{margin-top:2.5rem;display:flex;flex-direction:column;max-width:340px;margin-left:auto;margin-right:auto}
+.tl-row{display:grid;grid-template-columns:54px 20px 1fr;gap:0 14px;width:100%;padding-bottom:1.8rem}
+.tl-time{font-family:'Raleway',sans-serif;font-weight:300;font-size:0.95rem;color:#1a1a1a;padding-top:3px;text-align:right}
+.tl-mid{display:flex;flex-direction:column;align-items:center}
+.tl-dot{width:11px;height:11px;border:1.5px solid #333;border-radius:50%;background:#fff;flex-shrink:0;margin-top:5px}
+.tl-vline{flex:1;width:1px;background:#ddd;min-height:30px}
+.tl-event{font-family:'Tenor Sans',serif;font-size:0.92rem;color:#1a1a1a;padding-top:3px;margin-bottom:3px}
+.tl-sub{font-family:'Raleway',sans-serif;font-weight:300;font-size:0.76rem;color:#aaa;line-height:1.5}
+.loc-block{margin-bottom:2rem}
+.loc-tag{font-family:'Raleway',sans-serif;font-weight:200;font-size:0.62rem;letter-spacing:0.3em;text-transform:uppercase;color:#aaa;margin-bottom:0.4rem}
+.map-btn{display:inline-block;font-family:'Raleway',sans-serif;font-weight:300;font-size:0.72rem;letter-spacing:0.22em;color:#1a1a1a;text-decoration:none;border:1px solid #1a1a1a;padding:0.65rem 1.8rem;transition:all 0.3s;margin-top:0.8rem}
+.map-btn:hover{background:#1a1a1a;color:#fff}
+.div-line{width:100%;height:1px;background:#e8e8e8;margin:2rem 0}
+.dress-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:2rem}
+.dress-card{text-align:center}
+.dress-tag{font-family:'Raleway',sans-serif;font-weight:200;font-size:0.62rem;letter-spacing:0.28em;text-transform:uppercase;color:#aaa;margin-bottom:0.8rem}
+.swatches{display:flex;justify-content:center;gap:7px;flex-wrap:wrap}
+.swatch{width:40px;height:40px;border-radius:50%;border:1px solid rgba(0,0,0,0.08)}
+.gift-box{border:1px solid #e0e0e0;padding:1.8rem;margin-top:1.8rem;font-family:'Raleway',sans-serif;font-weight:300;font-size:0.85rem;line-height:1.9;color:#666}
+.form-wrap{margin-top:2rem;display:flex;flex-direction:column;gap:1.2rem;text-align:left}
+.form-group label{display:block;font-family:'Raleway',sans-serif;font-weight:300;font-size:0.65rem;letter-spacing:0.22em;text-transform:uppercase;color:#aaa;margin-bottom:6px}
+.form-input{width:100%;border:none;border-bottom:1px solid #ddd;padding:0.55rem 0;font-family:'Tenor Sans',serif;font-size:0.92rem;color:#1a1a1a;background:transparent;outline:none;transition:border-color 0.3s}
+.form-input:focus{border-color:#1a1a1a}
+.form-input::placeholder{color:#ccc}
+.radio-group{display:flex;gap:1.5rem;margin-top:5px;flex-wrap:wrap}
+.rl{display:flex;align-items:center;gap:8px;font-family:'Raleway',sans-serif;font-weight:300;font-size:0.85rem;color:#666;cursor:pointer}
+.rl input{accent-color:#1a1a1a;width:16px;height:16px}
+.submit-btn{background:#1a1a1a;color:#fff;border:none;font-family:'Raleway',sans-serif;font-weight:300;font-size:0.72rem;letter-spacing:0.3em;text-transform:uppercase;padding:1rem;cursor:pointer;transition:background 0.3s;margin-top:0.5rem;width:100%}
+.submit-btn:hover{background:#444}
+.confirm-box{display:none;text-align:center;padding:3rem 1rem}
+.ci{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:3rem;color:#1a1a1a;display:block;margin-bottom:1rem}
+.confirm-box p{font-family:'Raleway',sans-serif;font-weight:300;font-size:0.88rem;color:#666;line-height:1.9}
+.contact-dark{position:relative;overflow:hidden}
+.contact-dark-bg{position:absolute;inset:0;background-size:cover;background-position:center;filter:grayscale(100%) brightness(0.3)}
+.contact-box{background:rgba(0,0,0,0.38);border:1px solid rgba(255,255,255,0.18);padding:2rem;margin-top:2rem;text-align:center}
+.contact-name{font-family:'Tenor Sans',serif;font-size:1.05rem;color:#fff;margin-bottom:0.3rem}
+.contact-phone{font-family:'Raleway',sans-serif;font-weight:300;font-size:0.88rem;color:rgba(255,255,255,0.65);margin-bottom:1.2rem}
+.contact-btn{display:inline-block;background:#fff;color:#1a1a1a;font-family:'Raleway',sans-serif;font-weight:300;font-size:0.72rem;letter-spacing:0.2em;padding:0.75rem 2.5rem;text-decoration:none}
+.fi{opacity:0;transform:translateY(18px);transition:opacity 0.7s ease,transform 0.7s ease}
+.fi.show{opacity:1;transform:none}
+@media(max-width:480px){
+  .dress-grid{grid-template-columns:1fr;gap:1.5rem}
+  .photo-grid img{height:50vw}
+}
+</style>
+</head>
+<body>
+
+<audio id="bgmusic" loop preload="none">
+  <source src="klav_koka.mp3" type="audio/mpeg">
+</audio>
+
+<button id="music-btn" onclick="toggleMusic()" title="Музыка">
+  <svg class="note-off" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+  <svg class="note-on" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+</button>
+
+<div id="sticky-bar"><a href="#anketa">Подтвердить присутствие</a></div>
+
+<!-- HERO -->
+<section id="hero">
+  <div id="hero-img"></div>
+  <div class="hero-content">
+    <div class="hero-names">Ульяна<span class="hero-and">и</span>Юрий</div>
+    <div class="hero-line"></div>
+    <div class="hero-date-txt">17 / 06 / 26</div>
+  </div>
+</section>
+
+<!-- СВАДЬБА СОСТОИТСЯ -->
+<section class="s-white">
+  <div class="inner fi">
+    <div class="cal-wrap">
+      <div class="cal-line"></div>
+      <div class="cal-title">Свадьба<br>состоится</div>
+      <div class="cal-line"></div>
+    </div>
+    <div class="cal-month">Июнь 2026</div>
+    <div class="cal-grid">
+      <div class="cal-head">ПН</div><div class="cal-head">ВТ</div><div class="cal-head">СР</div><div class="cal-head">ЧТ</div><div class="cal-head">ПТ</div><div class="cal-head we">СБ</div><div class="cal-head we">ВС</div>
+      <div class="cal-day empty"></div><div class="cal-day empty"></div><div class="cal-day">1</div><div class="cal-day">2</div><div class="cal-day">3</div><div class="cal-day we">4</div><div class="cal-day we">5</div>
+      <div class="cal-day">6</div><div class="cal-day">7</div><div class="cal-day">8</div><div class="cal-day">9</div><div class="cal-day">10</div><div class="cal-day we">11</div><div class="cal-day we">12</div>
+      <div class="cal-day">13</div><div class="cal-day">14</div><div class="cal-day">15</div><div class="cal-day">16</div><div class="cal-day"><div class="cal-day hl">17</div></div><div class="cal-day we">18</div><div class="cal-day we">19</div>
+      <div class="cal-day">20</div><div class="cal-day">21</div><div class="cal-day">22</div><div class="cal-day">23</div><div class="cal-day">24</div><div class="cal-day we">25</div><div class="cal-day we">26</div>
+      <div class="cal-day">27</div><div class="cal-day">28</div><div class="cal-day">29</div><div class="cal-day">30</div>
+    </div>
+  </div>
+</section>
+
+<!-- ФОТО -->
+<div class="photo-full"><img src="photo_2026-04-08_18-15-59.jpg" alt=""></div>
+
+<!-- ПРИГЛАШЕНИЕ -->
+<section class="s-white">
+  <div class="inner fi">
+    <div class="cal-title" style="font-size:clamp(1.7rem,7vw,3rem)">Я люблю тебя<br>больше, чем вчера</div>
+    <div style="width:110px;height:1px;background:#ccc;margin:1.2rem auto 1.6rem"></div>
+    <p class="body-txt">Это официальное приглашение на нашу свадьбу!<br>А получили вы его потому, что мы очень хотим<br>видеть вас в этот день рядом с нами :)</p>
+  </div>
+</section>
+
+<!-- ФОТО АРКА -->
+<div style="background:#fff;padding:1rem 0 2rem;text-align:center">
+  <div class="photo-arch fi"><img src="photo_2026-04-08_18-15-59.jpg" alt="" style="object-position:center 60%"></div>
+</div>
+
+<!-- ФОТО СЕТКА -->
+<div class="photo-grid">
+  <img src="photo_2026-04-08_18-30-44.jpg" alt="" style="object-position:center 30%">
+  <img src="photo_2026-04-08_18-30-34.jpg" alt="" style="object-position:center 20%">
+</div>
+<div class="photo-grid">
+  <img src="photo_2026-04-08_18-30-25.jpg" alt="" style="object-position:center 30%">
+  <img src="photo_2026-04-08_18-31-01.jpg" alt="" style="object-position:center 20%">
+</div>
+
+<!-- ЛОКАЦИЯ -->
+<section class="s-gray">
+  <div class="inner fi">
+    <div class="cal-wrap">
+      <div class="cal-line"></div>
+      <div class="cal-title">Локация</div>
+      <div class="cal-line"></div>
+    </div>
+    <div class="loc-block">
+      <div class="loc-tag">ЗАГС · регистрация в 12:00</div>
+      <p class="body-txt">Московская область, Раменское<br>Красноармейская улица, 2, 140109</p>
+      <a class="map-btn" href="https://yandex.ru/maps/?text=Раменское,+Красноармейская+улица,+2" target="_blank">Открыть на карте</a>
+    </div>
+    <div class="div-line"></div>
+    <div class="loc-block">
+      <div class="loc-tag">Торжество · начало в 15:00 · завершение в 21:00</div>
+      <p class="body-txt">Раменский район<br>СНТ Торпедо, 50</p>
+      <a class="map-btn" href="https://yandex.ru/maps/?text=Раменский+район+СНТ+Торпедо+50" target="_blank">Открыть на карте</a>
+    </div>
+  </div>
+</section>
+
+<!-- ФОТО -->
+<div class="photo-full"><img src="photo_2026-04-08_18-30-56.jpg" alt="" style="object-position:center 40%"></div>
+
+<!-- ТАЙМИНГ -->
+<section class="s-white">
+  <div class="inner fi">
+    <div class="cal-wrap">
+      <div class="cal-line"></div>
+      <div class="cal-title">Тайминг</div>
+      <div class="cal-line"></div>
+    </div>
+    <div class="timeline">
+      <div class="tl-row">
+        <div class="tl-time">12:00</div>
+        <div class="tl-mid"><div class="tl-dot"></div><div class="tl-vline"></div></div>
+        <div>
+          <div class="tl-event">Сбор гостей — ЗАГС</div>
+          <div class="tl-sub">Красноармейская ул., 2, Раменское</div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-time">12:30</div>
+        <div class="tl-mid"><div class="tl-dot"></div><div class="tl-vline"></div></div>
+        <div>
+          <div class="tl-event">Выездная регистрация</div>
+          <div class="tl-sub">Клятвы и обмен кольцами</div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-time">15:00</div>
+        <div class="tl-mid"><div class="tl-dot"></div><div class="tl-vline"></div></div>
+        <div>
+          <div class="tl-event">Начало торжества</div>
+          <div class="tl-sub">СНТ Торпедо, 50 · Welcome</div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-time">16:00</div>
+        <div class="tl-mid"><div class="tl-dot"></div><div class="tl-vline"></div></div>
+        <div>
+          <div class="tl-event">Банкет</div>
+          <div class="tl-sub">Ужин, тосты, музыка</div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-time">17:30</div>
+        <div class="tl-mid"><div class="tl-dot"></div><div class="tl-vline"></div></div>
+        <div>
+          <div class="tl-event">Первый танец</div>
+          <div class="tl-sub">Танцы и веселье</div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-time">21:00</div>
+        <div class="tl-mid"><div class="tl-dot"></div></div>
+        <div>
+          <div class="tl-event">Завершение</div>
+          <div class="tl-sub">До новых встреч!</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ФОТО 3 КОЛОНКИ -->
+<div class="photo-3col">
+  <img src="photo_2026-04-08_18-30-15.jpg" alt="" style="object-position:center 25%">
+  <img src="photo_2026-04-08_18-50-15.jpg" alt="" style="object-position:center 20%">
+  <img src="photo_2026-04-08_18-30-48.jpg" alt="" style="object-position:center 30%">
+</div>
+
+<!-- ДРЕСС КОД -->
+<section class="s-gray">
+  <div class="inner fi">
+    <div class="cal-wrap">
+      <div class="cal-line"></div>
+      <div class="cal-title">Дресс-код</div>
+      <div class="cal-line"></div>
+    </div>
+    <p class="body-txt">Нам будет очень приятно видеть всех в элегантных образах</p>
+    <div class="dress-grid">
+      <div class="dress-card fi">
+        <div class="dress-tag">Для девушек</div>
+        <p class="body-txt" style="font-size:0.8rem;margin-bottom:1rem">Вечерние платья в постельных тонах</p>
+        <div class="swatches">
+          <div class="swatch" style="background:#f5ede4" title="Пудра"></div>
+          <div class="swatch" style="background:#e8d5c4" title="Персик"></div>
+          <div class="swatch" style="background:#d4bfb0" title="Кофе с молоком"></div>
+          <div class="swatch" style="background:#c9b8a8" title="Бежевый"></div>
+          <div class="swatch" style="background:#d4c5c5" title="Розово-пепельный"></div>
+          <div class="swatch" style="background:#bfcac5" title="Шалфей"></div>
+          <div class="swatch" style="background:#c5c5d4" title="Лаванда"></div>
+          <div class="swatch" style="background:#d4cfc5" title="Тауп"></div>
+        </div>
+      </div>
+      <div class="dress-card fi">
+        <div class="dress-tag">Для мужчин</div>
+        <p class="body-txt" style="font-size:0.8rem;margin-bottom:1rem">Классический костюм тёмных оттенков</p>
+        <div class="swatches">
+          <div class="swatch" style="background:#1a1a1a"></div>
+          <div class="swatch" style="background:#1a1a38"></div>
+          <div class="swatch" style="background:#2a2a2a"></div>
+          <div class="swatch" style="background:#3a1a1a"></div>
+          <div class="swatch" style="background:#1a2a1a"></div>
+        </div>
+      </div>
+    </div>
+    <p class="body-txt" style="font-size:0.76rem;color:#ccc;margin-top:1.5rem">Пожалуйста, избегайте белого цвета</p>
+  </div>
+</section>
+
+<!-- ФОТО -->
+<div class="photo-full"><img src="photo_2026-04-08_18-50-12.jpg" alt="" style="height:70vw;max-height:560px;object-position:center 35%"></div>
+
+<!-- ПОДАРКИ -->
+<section class="s-white">
+  <div class="inner fi">
+    <div class="cal-wrap">
+      <div class="cal-line"></div>
+      <div class="cal-title">Про подарки</div>
+      <div class="cal-line"></div>
+    </div>
+    <div class="gift-box">
+      <p style="font-size:1.6rem;margin-bottom:1rem">🍾</p>
+      <p>Дорогие гости, цветы — это прекрасно, но мы будем очень рады, если вместо них вы принесёте <strong>бутылочку чего-нибудь вкусного</strong> 😊<br><br>Это наша маленькая просьба, которая сделает вечер ещё теплее!</p>
+    </div>
+  </div>
+</section>
+
+<!-- ФОТО СЕТКА -->
+<div class="photo-grid">
+  <img src="photo_2026-04-08_18-50-28.jpg" alt="" style="object-position:center 40%">
+  <img src="photo_2026-04-08_18-50-32.jpg" alt="" style="object-position:center 25%">
+</div>
+
+<!-- СВЯЗАТЬСЯ С ОРГАНИЗАТОРОМ -->
+<section class="s-dark contact-dark">
+  <div class="contact-dark-bg" style="background-image:url('photo_2026-04-08_18-15-59.jpg')"></div>
+  <div class="inner fi" style="position:relative">
+    <div class="cal-wrap">
+      <div class="cal-line cal-line-w"></div>
+      <div class="cal-title cal-title-w">Связаться<br>с невестой и женихом</div>
+      <div class="cal-line cal-line-w"></div>
+    </div>
+    <div class="contact-box">
+      <p class="body-txt-w" style="margin-bottom:1.5rem;font-size:0.85rem">По всем вопросам свяжитесь с нами:</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.2rem">
+        <div>
+          <div class="contact-name">Невеста Ульяна</div>
+          <div class="contact-phone">+7 929 591-56-92</div>
+          <a class="contact-btn" href="tel:+79295915692">Написать</a>
+        </div>
+        <div>
+          <div class="contact-name">Жених Юрий</div>
+          <div class="contact-phone">+7 918 053-79-24</div>
+          <a class="contact-btn" href="tel:+79180537924">Написать</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- АНКЕТА ГОСТЯ -->
+<section class="s-white" id="anketa">
+  <div class="inner fi">
+    <div class="cal-wrap">
+      <div class="cal-line"></div>
+      <div class="cal-title">Анкета гостя</div>
+      <div class="cal-line"></div>
+    </div>
+    <p class="body-txt">Просим подтвердить своё присутствие на мероприятии до:</p>
+    <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.8rem;color:#1a1a1a;margin:0.5rem 0 1.5rem">01 / 06 / 2026</p>
+
+    <div id="rsvp-form-wrap">
+      <form class="form-wrap" onsubmit="submitRsvp(event)">
+        <div class="form-group">
+          <label>Ваше имя</label>
+          <input class="form-input" type="text" id="f-name" placeholder="Имя и фамилия" required>
+        </div>
+        <div class="form-group">
+          <label>Телефон</label>
+          <input class="form-input" type="tel" id="f-phone" placeholder="+7 (___) ___-__-__">
+        </div>
+        <div class="form-group">
+          <label>Подтверждение присутствия</label>
+          <div class="radio-group">
+            <label class="rl"><input type="radio" name="attend" value="да" checked> Да, приду!</label>
+            <label class="rl"><input type="radio" name="attend" value="нет"> К сожалению, нет</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Остаётесь ли вы на ночь?</label>
+          <div class="radio-group">
+            <label class="rl"><input type="radio" name="overnight" value="да"> Да</label>
+            <label class="rl"><input type="radio" name="overnight" value="нет" checked> Нет</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Пожелание по алкоголю</label>
+          <input class="form-input" type="text" id="f-alcohol" placeholder="Например: вино, шампанское, виски...">
+        </div>
+        <div class="form-group">
+          <label>Пожелания молодожёнам</label>
+          <input class="form-input" type="text" id="f-wish" placeholder="Тёплые слова">
+        </div>
+        <button class="submit-btn" type="submit">Подтвердить</button>
+      </form>
+    </div>
+
+    <div class="confirm-box" id="rsvp-confirm">
+      <span class="ci">♡</span>
+      <p>Спасибо! Ваш ответ получен.<br>Мы с нетерпением ждём вас<br>17 июня 2026 года!</p>
+    </div>
+  </div>
+</section>
+
+<!-- ФИНАЛЬНОЕ ФОТО -->
+<div class="photo-full"><img src="photo_2026-04-08_18-50-32.jpg" alt=""></div>
+
+<!-- FOOTER -->
+<footer style="background:#1a1a1a;padding:3.5rem 1.5rem;text-align:center">
+  <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:2.5rem;color:#fff;margin-bottom:0.8rem">У &amp; Ю</div>
+  <div style="width:70px;height:1px;background:rgba(255,255,255,0.15);margin:0 auto 0.8rem"></div>
+  <div style="font-family:'Raleway',sans-serif;font-weight:200;font-size:0.62rem;letter-spacing:0.35em;text-transform:uppercase;color:rgba(255,255,255,0.3)">17 июня 2026 · С любовью</div>
+</footer>
+
+<div style="height:52px"></div>
+
+<script>
+const audio = document.getElementById('bgmusic');
+const btn = document.getElementById('music-btn');
+let playing = false;
+
+audio.addEventListener('loadedmetadata', () => { audio.currentTime = 134; });
+audio.addEventListener('canplay', () => { if(!audio.currentTime) audio.currentTime = 134; });
+
+function toggleMusic(){
+  if(playing){
+    audio.pause();
+    btn.classList.remove('playing');
+    playing = false;
+  } else {
+    audio.currentTime = 134;
+    audio.play().then(() => {
+      btn.classList.add('playing');
+      playing = true;
+    }).catch(() => {});
+  }
+}
+
+const obs = new IntersectionObserver(es => {
+  es.forEach(e => { if(e.isIntersecting) e.target.classList.add('show'); });
+}, {threshold: 0.1});
+document.querySelectorAll('.fi').forEach(el => obs.observe(el));
+
+// ── Читаем сохранённый URL скрипта ──
+function getScriptUrl(){
+  try { return localStorage.getItem('wy_script_url') || ''; } catch(e){ return ''; }
+}
+
+function submitRsvp(e){
+  e.preventDefault();
+  const data = {
+    name: document.getElementById('f-name').value,
+    phone: document.getElementById('f-phone').value,
+    attend: document.querySelector('input[name="attend"]:checked').value,
+    overnight: document.querySelector('input[name="overnight"]:checked').value,
+    alcohol: document.getElementById('f-alcohol').value,
+    wish: document.getElementById('f-wish').value,
+    time: new Date().toLocaleString('ru-RU')
+  };
+
+  // Сохранение локально
+  try {
+    const arr = JSON.parse(localStorage.getItem('wy_guests') || '[]');
+    arr.push(data);
+    localStorage.setItem('wy_guests', JSON.stringify(arr));
+  } catch(ex) {}
+
+  // Отправка в Google Sheets
+  const url = getScriptUrl();
+  if(url) {
+    fetch(url, {
+      method: 'POST',
+      mode: 'no-cors',
+      body: JSON.stringify(data),
+      headers: {'Content-Type': 'application/json'}
+    }).catch(() => {});
+  }
+
+  document.getElementById('rsvp-form-wrap').style.display = 'none';
+  document.getElementById('rsvp-confirm').style.display = 'block';
+}
+
+// ── Панель настройки (видна только вам) ──
+// Откройте сайт и добавьте ?setup к URL, например: index.html?setup
+// Или нажмите Ctrl+Shift+S на сайте
+(function(){
+  function showSetup(){
+    const existing = document.getElementById('setup-panel');
+    if(existing){ existing.remove(); return; }
+    const panel = document.createElement('div');
+    panel.id = 'setup-panel';
+    panel.style.cssText = 'position:fixed;top:0;left:0;right:0;background:#1a1a1a;color:#fff;padding:16px 20px;z-index:9999;font-family:sans-serif;font-size:14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap';
+    const current = getScriptUrl();
+    panel.innerHTML = `
+      <span style="color:#aaa;flex-shrink:0">Google Sheets URL:</span>
+      <input id="su-inp" type="text" value="${current}" placeholder="https://script.google.com/macros/s/.../exec"
+        style="flex:1;min-width:200px;padding:6px 10px;border:1px solid #555;background:#2a2a2a;color:#fff;border-radius:4px;font-size:13px">
+      <button onclick="
+        const v=document.getElementById('su-inp').value.trim();
+        try{localStorage.setItem('wy_script_url',v);}catch(e){}
+        document.getElementById('setup-panel').innerHTML='<span style=color:#4caf50>✓ Сохранено! Перезагрузите страницу.</span>';
+        setTimeout(()=>document.getElementById('setup-panel').remove(),2500);
+      " style="padding:6px 16px;background:#4caf50;color:#fff;border:none;border-radius:4px;cursor:pointer">Сохранить</button>
+      <button onclick="document.getElementById('setup-panel').remove()" style="padding:6px 12px;background:#555;color:#fff;border:none;border-radius:4px;cursor:pointer">✕</button>
+      <span style="color:#666;font-size:12px;width:100%">Только вы видите эту панель (Ctrl+Shift+S)</span>
+    `;
+    document.body.prepend(panel);
+  }
+
+  document.addEventListener('keydown', e => {
+    if(e.ctrlKey && e.shiftKey && e.key === 'S') showSetup();
+  });
+  if(location.search.includes('setup')) showSetup();
+})();
+</script>
+</body>
+</html>
